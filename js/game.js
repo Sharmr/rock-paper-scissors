@@ -6,11 +6,12 @@ function computerPlay() {
     return randIntFromInterval(3);
 }
 
-function playerInput() {
+function playerInput(e) {
     let count = 0;
     while(true) {
         count++;
-        let move = prompt("Make your Move");
+        move = e.target.innerText;
+        console.log(move);
         move = move.toLowerCase();
         
         switch(move) {
@@ -72,33 +73,54 @@ function winnerWho(n) {
             return "SHIT SOMETHING'S GONE HORRIBLY WRONG. HORRIBLY WRONG.";
     }
 }
+const t = document.createElement('div');
+document.body.appendChild(t);
+function addDiv(text) {
+    t.textContent = text;
+}
+
+function playRound(e) {
+    const c = computerPlay();
+    const p = playerInput(e);
+    alert("YOU CHOSE " + whatDoesItMean(p)+" AND SKYNET CHOSE " + whatDoesItMean(c) + ".");
+    alert(winnerWho(andTheWinnerIs(p,c)));
+    addDiv("Your Score: " + pscore + "\n Computer Score: " + cscore);
+}
+
+
+
 
 let pscore = 0;
 let cscore = 0;
-function game() {
-    alert("5 ROUND DEATHMATCH TO THE DEATH. WHO WILL EMERGE VICTORIOUS?");
-    let round = 1;
-    pscore = 0;
-    cscore = 0;
-    while (round <= 5) {
-        alert("ROUND " + round);
-        const c = computerPlay();
-        const p = playerInput();
-        alert("YOU CHOSE " + whatDoesItMean(p)+" AND SKYNET CHOSE " + whatDoesItMean(c) + ".");
-        alert(winnerWho(andTheWinnerIs(p,c)));
-        console.log(winnerWho(andTheWinnerIs(p,c))+ " ROUND " + round);
-        round++;
-    }
-    if(pscore == cscore) {
-        console.log("THE GAME HAS RESULTED IN A DRAW. IT SEEMS AS THOUGH HUMANITY AND AI WILL HAVE TO LEARN HOW TO LIVE IN PEACE.");
-        alert("THE GAME HAS RESULTED IN A DRAW. IT SEEMS AS THOUGH HUMANITY AND AI WILL HAVE TO LEARN HOW TO LIVE IN PEACE.");
-    }
+
+
+
+
+function game(e) {
+
+    playRound(e);
+
+   if(cscore >= 5 || pscore >=5){
     if(cscore > pscore) {
-        alert("SKYNET WINS. LAUNCH THE NUKES");
-        console.log("SKYNET WINS. LAUNCH THE NUKES");
+        //alert("SKYNET WINS. LAUNCH THE NUKES");
+        addDiv("SKYNET WINS. LAUNCH THE NUKES");
+        cscore = 0;
+        pscore = 0;
     }
     else {
-        alert("NOOOOOOOOOOOOOOOOOOOO THIS CANNOT BEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-        console.log("NOOOOOOOOOOOOOOOOOOOO THIS CANNOT BEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+        //alert("NOOOOOOOOOOOOOOOOOOOO THIS CANNOT BEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+        addDiv("NOOOOOOOOOOOOOOOOOOOO THIS CANNOT BEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+        pscore = 0;
+        cscore = 0;
     }
+
 }
+}
+
+const btn= document.querySelectorAll('#btn');
+console.log(btn);
+
+btn.forEach(button => {
+    button.addEventListener('click', game);
+}); 
+
